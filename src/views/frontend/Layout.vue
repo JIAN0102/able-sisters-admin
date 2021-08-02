@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>後台 h1</h1>
     <router-view />
   </div>
 </template>
@@ -15,5 +14,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/assets/scss/all-backend.scss";
+@import "@/assets/scss/all-frontend.scss";
 </style>
