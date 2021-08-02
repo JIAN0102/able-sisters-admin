@@ -1,13 +1,14 @@
 <template>
   <div>
-    <h1>後台 h1</h1>
     <Navbar />
-    <router-view />
+    <div class="container">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
-import Navbar from '@/components/backend/Navbar.vue';
+import Navbar from '@/components/admin/Navbar.vue';
 
 export default {
   components: {
@@ -23,9 +24,10 @@ export default {
     const api = `${process.env.VUE_APP_API}/api/user/check`;
     this.$http.post(api)
       .then((res) => {
-        if (!res.data.success) {
-          this.$router.push('/login');
-        }
+        console.log(res);
+        // if (!res.data.success) {
+        //   this.$router.push('/login');
+        // }
       })
       .catch((err) => {
         console.log(err);
