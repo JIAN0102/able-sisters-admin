@@ -1,21 +1,26 @@
 <template>
   <div>
     <Navbar />
-    <div class="container">
+    <div class="container py-5">
+      <ToastMessages />
       <router-view />
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from '@/components/admin/Navbar.vue';
+import emitter from '@/methods/emitter';
+import Navbar from '@/components/Navbar.vue';
+import ToastMessages from '@/components/ToastMessages.vue';
 
 export default {
   components: {
     Navbar,
+    ToastMessages,
   },
-  data() {
+  provide() {
     return {
+      emitter,
     };
   },
   created() {
@@ -24,18 +29,11 @@ export default {
     const api = `${process.env.VUE_APP_API}/api/user/check`;
     this.$http.post(api)
       .then((res) => {
-        console.log(res);
-        // if (!res.data.success) {
-        //   this.$router.push('/login');
-        // }
-      })
-      .catch((err) => {
-        console.log(err);
+        if (!res.data.success) {
+          // this.$router.push('/');
+          console.log('尚未登入');
+        }
       });
   },
 };
 </script>
-
-<style lang="scss">
-@import "@/assets/scss/all-backend.scss";
-</style>

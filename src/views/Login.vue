@@ -1,8 +1,9 @@
 <template>
+  <Loading :active="isLoading" />
   <div class="container mt-5">
     <form
       class="row justify-content-center"
-      @submit.prevent="signIn"
+      @submit.prevent="signin"
     >
       <div class="col-md-6">
         <h1 class="h3 mb-3 font-weight-normal">
@@ -54,6 +55,7 @@
 export default {
   data() {
     return {
+      isLoading: false,
       user: {
         username: '',
         password: '',
@@ -61,7 +63,8 @@ export default {
     };
   },
   methods: {
-    signIn() {
+    signin() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}/admin/signin`;
       this.$http.post(api, this.user)
         .then((res) => {
@@ -70,9 +73,7 @@ export default {
             document.cookie = `token=${token}; expires=${new Date(expired)}`;
             this.$router.push('/admin/products');
           }
-        })
-        .catch((err) => {
-          console.log(err);
+          this.isLoading = false;
         });
     },
   },

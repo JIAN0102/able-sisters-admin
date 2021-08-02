@@ -3,30 +3,28 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const routes = [
   {
     path: '/',
-    name: 'Layout',
-    component: () => import('@/views/Layout.vue'),
-    children: [
-      {
-        path: '',
-        name: 'Home',
-        component: () => import('@/views/Home.vue'),
-      },
-      {
-        path: 'login',
-        name: 'Login',
-        component: () => import('@/views/Login.vue'),
-      },
-    ],
+    name: 'Login',
+    component: () => import('@/views/Login.vue'),
   },
   {
     path: '/admin',
     name: 'Admin',
-    component: () => import('@/views/admin/Admin.vue'),
+    component: () => import('@/views/Admin.vue'),
     children: [
       {
         path: 'products',
-        name: 'DashboardProducts',
-        component: () => import('@/views/admin/Products.vue'),
+        name: 'Products',
+        component: () => import('@/views/Products.vue'),
+      },
+      {
+        path: 'orders',
+        name: 'Orders',
+        component: () => import('@/views/Orders.vue'),
+      },
+      {
+        path: 'coupons',
+        name: 'Coupons',
+        component: () => import('@/views/Coupons.vue'),
       },
     ],
   },

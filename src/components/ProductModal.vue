@@ -1,10 +1,10 @@
 <template>
   <div
-    id="exampleModal"
+    id="productModal"
     ref="modal"
     class="modal fade"
     tabindex="-1"
-    aria-labelledby="exampleModalLabel"
+    aria-labelledby="productModalLabel"
     aria-hidden="true"
   >
     <div
@@ -14,7 +14,7 @@
       <div class="modal-content border-0">
         <div class="modal-header bg-dark text-white">
           <h5
-            id="exampleModalLabel"
+            id="productModalLabel"
             class="modal-title"
           >
             <span>新增產品</span>
@@ -41,6 +41,10 @@
                   class="form-control"
                   placeholder="請輸入圖片連結"
                 >
+                <img
+                  :src="tempProduct.imageUrl"
+                  class="img-fluid"
+                >
               </div>
               <div class="mb-3">
                 <label
@@ -51,8 +55,10 @@
                 </label>
                 <input
                   id="customFile"
+                  ref="fileInput"
                   type="file"
                   class="form-control"
+                  @change="uploadFile"
                 >
               </div>
               <img
@@ -145,7 +151,7 @@
                   >原價</label>
                   <input
                     id="origin_price"
-                    v-model="tempProduct.origin_price"
+                    v-model.number="tempProduct.origin_price"
                     type="number"
                     class="form-control"
                     placeholder="請輸入原價"
@@ -158,7 +164,7 @@
                   >售價</label>
                   <input
                     id="price"
-                    v-model="tempProduct.price"
+                    v-model.number="tempProduct.price"
                     type="number"
                     class="form-control"
                     placeholder="請輸入售價"
@@ -236,9 +242,10 @@
 </template>
 
 <script>
-import Modal from 'bootstrap/js/dist/modal';
+import modalMixin from '@/mixins/modalMixin';
 
 export default {
+  mixins: [modalMixin],
   props: {
     product: {
       type: Object,
@@ -256,21 +263,24 @@ export default {
       this.tempProduct = this.product;
     },
   },
-  mounted() {
-    this.modal = new Modal(this.$refs.modal);
-  },
   methods: {
-    showModal() {
-      this.modal.show();
-    },
-    hideModal() {
-      this.modal.hide();
-    },
     addImage() {
       this.tempProduct.imagesUrl.push('');
     },
     removeImage(index) {
       this.tempProduct.imagesUrl.splice(index, 1);
+    },
+    uploadFile() {
+      const uploadedFile = this.$refs.fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file-uo-upload', uploadedFile);
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/upload`;
+      this.$http.post(api, formData)
+        .then((res) => {
+          if (res.data.success) {
+            this.tempProduct.imageUrl = res.data.imageUrl;
+          }
+        });
     },
   },
 };

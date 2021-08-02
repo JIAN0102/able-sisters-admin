@@ -1,10 +1,11 @@
 <template>
+  <Loading :active="isLoading" />
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a
         class="navbar-brand"
         href="#"
-      >Navbar</a>
+      >Able Sisters</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -22,17 +23,31 @@
       >
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a
+            <router-link
               class="nav-link active"
               aria-current="page"
-              href="#"
-            >Home</a>
+              :to="{ name: 'Products' }"
+            >
+              產品
+            </router-link>
           </li>
           <li class="nav-item">
-            <a
-              class="nav-link"
-              href="#"
-            >Features</a>
+            <router-link
+              class="nav-link active"
+              aria-current="page"
+              :to="{ name: 'Orders' }"
+            >
+              訂單
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link active"
+              aria-current="page"
+              :to="{ name: 'Coupons' }"
+            >
+              優惠券
+            </router-link>
           </li>
           <li class="nav-item">
             <a
@@ -50,19 +65,20 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      isLoading: false,
+    };
   },
   methods: {
     logout() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}/logout`;
       this.$http.post(api)
         .then((res) => {
           if (res.data.success) {
-            this.$router.push('/login');
+            this.$router.push('/');
           }
-        })
-        .catch((err) => {
-          console.log(err);
+          this.isLoading = false;
         });
     },
   },
